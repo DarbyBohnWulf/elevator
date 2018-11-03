@@ -23,5 +23,6 @@
   },
   "dependencies": {
     "inquirer": "^6.2.0"
-  }
+  },
+  "repository": "github:DarbyBohnWulf/elevator"
 }
