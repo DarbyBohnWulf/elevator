@@ -21,11 +21,10 @@ class Elevator {
             message = 'We\'ve reached ' + this.targetFloor + '.\nHave a good day!';
         }
         else {
-            console.log('Going down...');
-            travelTime = (difference * -1) * this.travelSpeed;
+            travelTime = difference * this.travelSpeed;
             message = 'We\'ve reached ' + this.targetFloor + '.\nHave a good day!';
         }
-        return { message, travelTime };
+        return Promise.resolve({ message, travelTime });
     }
     arriveAtTarget() {
         this.currentFloor = this.targetFloor;

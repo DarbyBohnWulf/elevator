@@ -42,24 +42,16 @@ exports.panel.defineCommand('gotofloor', {
                 carTalk = { message: 'You\'re already there. ;-)', ms: 0 };
             }
             else {
-                carTalk = await exports.panelC.currentCar.goToFloor(floorI);
+                carTalk = await exports.panelC.currentCar.goToFloor(floor);
             }
         }
         else {
             carTalk = { message: 'Sorry, we don\'t have that floor.', ms: 0 };
         }
-        waitThenDo(carTalk.ms, () => {
+        setTimeout(() => {
             exports.panelC.currentCar.arriveAtTarget();
             console.log(carTalk.message);
             exports.panel.displayPrompt();
-        });
+        }, carTalk.ms);
     }
 });
-function wait(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
-async function waitThenDo(time, task) {
-    await wait(time).then(task());
-}

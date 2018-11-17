@@ -8,26 +8,28 @@ export class Elevator {
     this.targetFloor = 1
   }
 
-  goToFloor(target: number): void {
+  goToFloor(target: number): {message: string,travelTime: number} {
     this.targetFloor = target
     let difference: number = this.targetFloor - this.currentFloor
+    let message: string
+    let travelTime: number
     if (difference === 0) {
-      console.log('You\'re already there. ;-)')
+      message = 'You\'re already there. ;-)'
+      travelTime = 0
     } else if (difference > 0) {
       console.log('Going up...')
-      let travelTime: number = difference * this.travelSpeed
-      setTimeout(()=>{
-        this.currentFloor = target
-        console.log('We\'ve reached ' + this.targetFloor + '.\nHave a good day!')
-      }, travelTime)
-    } else if (difference < 0) {
+      travelTime = difference * this.travelSpeed
+      message = 'We\'ve reached ' + this.targetFloor + '.\nHave a good day!'
+    } else {
       console.log('Going down...')
-      let travelTime: number = difference * this.travelSpeed
-      setTimeout(()=>{
-        this.currentFloor = target
-        console.log('We\'ve reached ' + this.targetFloor + '.\nHave a good day!')
-      }, travelTime)
+      travelTime = (difference * -1) * this.travelSpeed
+      message = 'We\'ve reached ' + this.targetFloor + '.\nHave a good day!'
     }
+    return {message,travelTime}
+  }
+
+  arriveAtTarget(): void {
+    this.currentFloor = this.targetFloor
   }
 
   whichFloor(): number {
