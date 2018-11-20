@@ -4,3 +4,6 @@ node_modules
 # tsc output
 dist/
 spec/**.js
+
+# Editor cruft
+*.bak

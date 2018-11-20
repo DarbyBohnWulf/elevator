@@ -1,11 +1,14 @@
 {
   "name": "elevator",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A fun and friendly representation of an indoor vertical-movement-only vehicle.",
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build-tests": "tsc -p tsconfig.spec.json",
     "start": "node dist/index.js",
-    "test": "jasmine --reporter=jasmine-console-reporter"
+    "test": "jasmine --reporter=jasmine-console-reporter",
+    "postinstall": "npm run build"
   },
   "keywords": [
     "elevator",
