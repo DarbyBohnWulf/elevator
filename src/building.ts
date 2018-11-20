@@ -9,7 +9,6 @@ export class Building {
 
   constructor(public name: string, public floorList: Array<number>, carsCount: number) {
     this.totalFloors = floorList.length;
-    // let elevators
     for (let i = 0; i < carsCount; i++) {
       this.elevatorBay.push(new Elevator())
     }

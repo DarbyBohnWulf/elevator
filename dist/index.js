@@ -8,7 +8,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const repl = __importStar(require("repl"));
-// import { Inquirer } from 'inquirer';
 const building_1 = require("./building");
 let building = new building_1.Building('Luna\'s Tower', [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 1);
 exports.panel = repl.start({ prompt: ':-) ' });
@@ -32,34 +31,33 @@ exports.panel.defineCommand('whichfloor', {
 });
 exports.panel.defineCommand('gotofloor', {
     help: 'Takes you to another floor in a building',
-    async action(floor) {
+    action(floor) {
         let floorI = parseInt(floor, 10);
-        let carTalk;
-        let difference;
         if (exports.panelC.currentLocation.hasFloor(floorI)) {
-            difference = floorI - exports.panelC.currentCar.currentFloor;
-            if (difference === 0) {
-                carTalk = { message: 'You\'re already there. ;-)', ms: 0 };
-            }
-            else {
-                carTalk = await exports.panelC.currentCar.goToFloor(floorI);
-            }
+            pressButton(floorI);
         }
         else {
-            carTalk = { message: 'Sorry, we don\'t have that floor.', ms: 0 };
-        }
-        waitThenDo(carTalk.ms, () => {
-            exports.panelC.currentCar.arriveAtTarget();
-            console.log(carTalk.message);
+            console.log('Sorry, we don\'t have that floor.');
             exports.panel.displayPrompt();
-        });
+        }
     }
 });
-function wait(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
+function keepGoing(stats) {
+    setTimeout(() => {
+        exports.panelC.currentCar.arriveAtTarget();
+        console.log(stats.message);
+        exports.panel.displayPrompt();
+    }, stats.travelTime);
 }
-async function waitThenDo(time, task) {
-    await wait(time).then(task());
+function pressButton(floor) {
+    let carTalk;
+    let difference;
+    difference = floor - exports.panelC.currentCar.currentFloor;
+    if (difference === 0) {
+        carTalk = { message: 'You\'re already there. ;-)', travelTime: 0 };
+    }
+    else {
+        carTalk = exports.panelC.currentCar.goToFloor(floor);
+    }
+    keepGoing(carTalk);
 }

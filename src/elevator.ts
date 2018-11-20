@@ -8,7 +8,7 @@ export class Elevator {
     this.targetFloor = 1
   }
 
-  goToFloor(target: number): {message: string,travelTime: number} {
+  goToFloor(target: number): {message: string, travelTime: number} {
     this.targetFloor = target
     let difference: number = this.targetFloor - this.currentFloor
     let message: string

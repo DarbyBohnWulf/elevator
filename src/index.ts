@@ -1,5 +1,4 @@
 import * as repl from 'repl';
-// import { Inquirer } from 'inquirer';
 import { Building } from './building';
 
 let building: Building = new Building('Luna\'s Tower', [-1,0,1,2,3,4,5,6,7,8,9,10], 1)
@@ -26,35 +25,35 @@ panel.defineCommand('whichfloor', {
 })
 panel.defineCommand('gotofloor', {
   help: 'Takes you to another floor in a building',
-  async action(floor: string) {
+  action(floor: string) {
     let floorI: number = parseInt(floor, 10)
-    let carTalk: {message: string,ms: number}
-    let difference: number|undefined
     if (panelC.currentLocation.hasFloor(floorI)) {
-      difference = floorI - panelC.currentCar.currentFloor
-      if (difference === 0) {
-        carTalk = {message: 'You\'re already there. ;-)', ms: 0}
-      }
-      else {
-        carTalk = await panelC.currentCar.goToFloor(floorI)
-      }
+      pressButton(floorI)
     }
     else {
-      carTalk = {message: 'Sorry, we don\'t have that floor.', ms: 0}
-    }
-    waitThenDo(carTalk.ms,() => {
-      panelC.currentCar.arriveAtTarget()
-      console.log(carTalk.message)
+      console.log('Sorry, we don\'t have that floor.')
       panel.displayPrompt()
-    })
+    }
   }
 })
-function wait(ms: number): Promise<any> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
+
+function keepGoing(stats: {message: string, travelTime: number}): void {
+  setTimeout(() => {
+    panelC.currentCar.arriveAtTarget()
+    console.log(stats.message)
+    panel.displayPrompt()
+  }, stats.travelTime)
 }
 
-async function waitThenDo(time: number, task: Function): Promise<void> {
-  await wait(time).then(task())
+function pressButton(floor: number): void {
+  let carTalk: {message: string,travelTime: number}
+  let difference: number|undefined
+  difference = floor - panelC.currentCar.currentFloor
+  if (difference === 0) {
+    carTalk = {message: 'You\'re already there. ;-)', travelTime: 0}
+  }
+  else {
+    carTalk = panelC.currentCar.goToFloor(floor)
+  }
+  keepGoing(carTalk)
 }
